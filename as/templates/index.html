@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff9f6">
+    <title>Staywise — Airbnb price estimator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Staywise home">
+        <span class="brand-mark" aria-hidden="true">s</span>
+        <span>staywise</span>
+      </a>
+      <span class="topbar-note">A smarter way to set your nightly rate</span>
+      <span class="model-badge"><span class="status-dot"></span> Model ready</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow"><span class="eyebrow-line"></span> HOST WITH CONFIDENCE</p>
+        <h1>Find your listing’s<br><span>sweet spot.</span></h1>
+        <p class="intro-copy">A thoughtful starting point for your nightly price, based on the details guests care about.</p>
+      </section>
+
+      <div class="workspace">
+        <form id="listing-form" class="form-card">
+          <div class="card-heading">
+            <div>
+              <p class="section-kicker">YOUR LISTING</p>
+              <h2>Tell us about your place</h2>
+            </div>
+            <span class="step-count">01 <span>/ 01</span></span>
+          </div>
+
+          <fieldset>
+            <legend><span class="legend-number">01</span> Location</legend>
+            <div class="field-grid two-columns">
+              <label class="field">
+                <span>City</span>
+                <select id="city" name="city" required disabled>
+                  <option value="">Loading cities…</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Neighbourhood</span>
+                <select id="neighbourhood" name="neighbourhood" required disabled>
+                  <option value="">Choose a city first</option>
+                </select>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend><span class="legend-number">02</span> The space</legend>
+            <div class="field-grid two-columns">
+              <label class="field">
+                <span>Property type</span>
+                <select id="property_type" name="property_type" required disabled></select>
+              </label>
+              <label class="field">
+                <span>Room type</span>
+                <select id="room_type" name="room_type" required disabled></select>
+              </label>
+              <label class="field">
+                <span>Bed type</span>
+                <select id="bed_type" name="bed_type" required disabled></select>
+              </label>
+              <label class="field">
+                <span>Cancellation policy</span>
+                <select id="cancellation_policy" name="cancellation_policy" required disabled></select>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend><span class="legend-number">03</span> Capacity &amp; fees</legend>
+            <div class="field-grid four-columns">
+              <label class="field">
+                <span>Guests</span>
+                <input name="accommodates" type="number" min="1" max="16" step="1" value="2" required>
+              </label>
+              <label class="field">
+                <span>Bathrooms</span>
+                <input name="bathrooms" type="number" min="0" max="8" step="0.5" value="1" required>
+              </label>
+              <label class="field">
+                <span>Bedrooms</span>
+                <input name="bedrooms" type="number" min="0" max="10" step="1" value="1" required>
+              </label>
+              <label class="field">
+                <span>Beds</span>
+                <input name="beds" type="number" min="0" max="18" step="1" value="1" required>
+              </label>
+            </div>
+            <div class="toggle-row">
+              <label class="toggle-option">
+                <input name="cleaning_fee" type="checkbox">
+                <span class="custom-check" aria-hidden="true"></span>
+                <span><strong>Cleaning fee</strong><small>I charge a separate cleaning fee</small></span>
+              </label>
+              <label class="toggle-option">
+                <input name="instant_bookable" type="checkbox">
+                <span class="custom-check" aria-hidden="true"></span>
+                <span><strong>Instant Book</strong><small>Guests can book without approval</small></span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="amenities-fieldset">
+            <legend><span class="legend-number">04</span> Amenities</legend>
+            <p class="fieldset-hint">Choose what guests will find at your place.</p>
+            <div id="amenities" class="amenity-grid" aria-live="polite">
+              <span class="loading-copy">Loading amenities…</span>
+            </div>
+          </fieldset>
+
+          <div id="form-error" class="form-error" role="alert" hidden></div>
+          <button id="submit-button" class="submit-button" type="submit" disabled>
+            <span>Estimate my nightly price</span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+          <p class="form-footnote">Your listing details stay in this browser session.</p>
+        </form>
+
+        <aside class="result-column">
+          <section id="result-card" class="result-card" aria-live="polite">
+            <div class="result-topline">
+              <span class="result-icon" aria-hidden="true">✦</span>
+              <span class="result-label">YOUR ESTIMATED NIGHTLY PRICE</span>
+            </div>
+            <div id="empty-result" class="empty-result">
+              <div class="price-placeholder"><span>$</span><span class="placeholder-line"></span></div>
+              <h2>Your estimate<br>will appear here.</h2>
+              <p>Fill in your listing details and we’ll find a helpful place to start.</p>
+            </div>
+            <div id="price-result" class="price-result" hidden>
+              <p class="price-value"><span>$</span><span id="price-amount">0</span><span class="price-period">/ night</span></p>
+              <p class="result-caption">A data-informed starting point for your listing.</p>
+              <div class="result-divider"></div>
+              <p class="result-model"><span class="result-check" aria-hidden="true">✓</span> Estimated with <strong id="model-name">Linear Regression</strong></p>
+            </div>
+            <div id="loading-result" class="loading-result" hidden>
+              <span class="spinner" aria-hidden="true"></span>
+              <p>Finding your estimate…</p>
+            </div>
+            <div class="result-decoration decoration-one"></div>
+            <div class="result-decoration decoration-two"></div>
+          </section>
+
+          <section class="insight-card">
+            <div class="insight-icon" aria-hidden="true">↗</div>
+            <div>
+              <p class="insight-title">A helpful starting point</p>
+              <p class="insight-copy">Location, space, and amenities all shape what guests are willing to pay.</p>
+            </div>
+          </section>
+          <p id="model-note" class="model-note">Estimates are based on historical listing data and are not a guarantee of current market prices.</p>
+          <p id="model-accuracy" class="model-accuracy"></p>
+        </aside>
+      </div>
+
+      <footer class="page-footer">
+        <span>Staywise <span class="footer-dot">·</span> Smart Airbnb Pricing</span>
+        <span>Built for better hosting</span>
+      </footer>
+    </main>
+  </body>
+</html>
