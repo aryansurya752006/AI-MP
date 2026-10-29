@@ -4,3 +4,4 @@ venv/
 .ipynb_checkpoints/
 train.csv
 models/*.joblib
+.DS_Store
