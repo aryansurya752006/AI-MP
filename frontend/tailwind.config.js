@@ -6,6 +6,12 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Zilla Slab"', '"Noto Serif"', 'Georgia', 'serif'],
+        serif: ['"Noto Serif"', 'Georgia', 'serif'],
+        slab: ['"Zilla Slab"', 'Georgia', 'serif'],
+        display: ['"Archivo Black"', 'sans-serif'],
+      },
       colors: {
         grayscale: {
           bg: '#F5F5F5',

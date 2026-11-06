@@ -12,7 +12,7 @@ export async function predictPrice(request: PredictionRequest): Promise<Predicti
   // If backend endpoint is configured and reachable in Phase 2
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1800);
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     const response = await fetch(`${API_BASE_URL}/predict`, {
       method: 'POST',
@@ -150,7 +150,7 @@ export async function predictPrice(request: PredictionRequest): Promise<Predicti
 export async function getModelPerformance(): Promise<ModelPerformanceData> {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1500);
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
     const response = await fetch(`${API_BASE_URL}/model-performance`, {
       signal: controller.signal

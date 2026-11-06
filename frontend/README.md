@@ -1,32 +1,67 @@
-# React + TypeScript + Vite
+# StayWise AI — Frontend Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Modern React + TypeScript web application for predicting Airbnb nightly rental prices using machine learning.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📁 Project Architecture & Directory Structure
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```text
+frontend/
+├── public/                     # Static assets (favicons, SVG icons)
+├── src/
+│   ├── assets/                 # SVGs and graphic illustrations
+│   ├── components/             # Reusable UI presentation components
+│   │   ├── Footer.tsx          # Minimal sticky footer (@ ARYAN SURYA S)
+│   │   ├── HouseIllustration.tsx # Architectural monochrome house vector
+│   │   ├── Navbar.tsx          # Sticky top navigation bar
+│   │   ├── ScrollToTop.tsx     # Route-change auto-scroll utility
+│   │   └── index.ts            # Components barrel export
+│   ├── context/                # React Context for global state
+│   │   ├── PredictionContext.tsx # Context definition & interface
+│   │   ├── PredictionProvider.tsx # State management with sessionStorage persistence
+│   │   ├── usePrediction.ts    # Custom hook
+│   │   └── index.ts            # Context barrel export
+│   ├── data/                   # Dataset feature metadata and options
+│   │   └── datasetInfo.ts      # Cities, amenities, property types, defaults
+│   ├── pages/                  # Route view components
+│   │   ├── HomePage.tsx        # Centered landing view with primary CTA
+│   │   ├── PredictPage.tsx     # Interactive multi-field prediction form
+│   │   ├── ResultsPage.tsx     # Estimated price card, breakdown & summary
+│   │   ├── HowItWorksPage.tsx  # ML pipeline walkthrough & code snippets
+│   │   ├── AboutModelPage.tsx  # Log-regression architecture & feature weights
+│   │   ├── ModelPerformancePage.tsx # Evaluation metrics & diagnostic plot
+│   │   └── index.ts            # Pages barrel export
+│   ├── services/               # API clients & client-side inference fallback
+│   │   └── api.ts              # Model inference & evaluation fetching
+│   ├── types/                  # TypeScript interface definitions
+│   │   └── index.ts            # PredictionRequest, PredictionResponse, etc.
+│   ├── App.css                 # Custom utility styles
+│   ├── App.tsx                 # Root router and application layout
+│   ├── index.css               # Global Tailwind CSS & typography setup
+│   └── main.tsx                # React DOM root entry point
+├── index.html                  # HTML template with Google Fonts
+├── package.json                # Project dependencies and npm scripts
+├── tailwind.config.js          # Tailwind theme & font-family config
+├── tsconfig.json               # TypeScript base configuration
+└── vite.config.ts              # Vite bundler configuration
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+---
+
+## 🚀 Available Scripts
+
+In the `frontend` directory:
+
+- **`npm run dev`**: Starts local development server at `http://localhost:5173/`.
+- **`npm run build`**: Type-checks with `tsc -b` and builds optimized production bundle.
+- **`npm run lint`**: Runs fast Oxlint checks across all TypeScript/TSX files.
+- **`npm run preview`**: Previews the built production distribution locally.
+
+---
+
+## 🎨 Design System & Fonts
+
+- **Display Typography**: `Archivo Black`
+- **Body & Editorial**: `Zilla Slab`, `Noto Serif`
+- **Palette**: Minimalist monochrome grayscale (`#FFFFFF`, `#F5F5F5`, `#171717`, `#737373`, `#E5E5E5`)

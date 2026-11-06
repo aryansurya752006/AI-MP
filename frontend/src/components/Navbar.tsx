@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Home, Menu, X } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,9 +20,9 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#FFFFFF] border-b border-[#E5E5E5] w-full">
-      <div className="page-container">
-        <div className="flex items-center justify-between h-16 w-full">
+    <nav className="sticky top-0 z-50 bg-[#FFFFFF] border-b border-[#E5E5E5] w-full h-16 flex items-center">
+      <div className="page-container w-full">
+        <div className="flex items-center justify-between w-full">
           {/* Logo / Brand - Aligned Left */}
           <Link
             to="/"
@@ -42,7 +42,7 @@ export const Navbar: React.FC = () => {
             </div>
           </Link>
 
-          {/* Desktop & Tablet Nav Links - Centered / Distributed */}
+          {/* Desktop & Tablet Nav Links */}
           <div className="hidden md:flex items-center space-x-1 lg:space-x-3">
             {navLinks.map((item) => {
               const active = isActive(item.path);
@@ -50,7 +50,7 @@ export const Navbar: React.FC = () => {
                 <Link
                   key={item.path}
                   to={item.path}
-                  className={`px-2.5 lg:px-3.5 py-1.5 text-xs lg:text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
+                  className={`px-3 py-1.5 text-xs lg:text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
                     active
                       ? 'text-[#171717] bg-[#F5F5F5]'
                       : 'text-[#737373] hover:text-[#171717] hover:bg-[#F9F9F9]'
@@ -60,17 +60,6 @@ export const Navbar: React.FC = () => {
                 </Link>
               );
             })}
-          </div>
-
-          {/* Predict Price CTA Button - Aligned Right */}
-          <div className="hidden md:flex items-center flex-shrink-0">
-            <Link
-              to="/predict"
-              className="inline-flex items-center space-x-1.5 bg-[#333333] hover:bg-[#1f1f1f] text-white text-xs lg:text-sm font-medium px-4 py-2 rounded-lg transition-colors shadow-sm whitespace-nowrap"
-            >
-              <span>Predict Price</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
           </div>
 
           {/* Mobile Menu Toggle Button */}
@@ -88,7 +77,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Menu Dropdown */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E5E5E5] bg-[#FFFFFF] px-4 pt-3 pb-5 space-y-1.5 shadow-md">
+        <div className="md:hidden absolute top-16 left-0 right-0 border-b border-[#E5E5E5] bg-[#FFFFFF] px-4 pt-3 pb-5 space-y-1.5 shadow-md">
           {navLinks.map((item) => (
             <Link
               key={item.path}
@@ -103,16 +92,6 @@ export const Navbar: React.FC = () => {
               {item.label}
             </Link>
           ))}
-          <div className="pt-2">
-            <Link
-              to="/predict"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full flex items-center justify-center space-x-1.5 bg-[#333333] hover:bg-[#1f1f1f] text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm"
-            >
-              <span>Predict Price</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </Link>
-          </div>
         </div>
       )}
     </nav>

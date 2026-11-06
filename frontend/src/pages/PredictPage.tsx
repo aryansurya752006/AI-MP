@@ -12,7 +12,7 @@ import {
 } from '../data/datasetInfo';
 import type { PredictionRequest } from '../types';
 import { predictPrice } from '../services/api';
-import { usePrediction } from '../context/PredictionContext';
+import { usePrediction } from '../context';
 import {
   RotateCcw,
   Sparkles,

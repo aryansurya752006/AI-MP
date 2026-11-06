@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { usePrediction } from '../context/PredictionContext';
+import { usePrediction } from '../context';
 import { AMENITIES_LIST } from '../data/datasetInfo';
 import {
   ArrowLeft,
@@ -19,6 +19,10 @@ export const ResultsPage: React.FC = () => {
   const navigate = useNavigate();
   const { prediction } = usePrediction();
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   // If user navigates directly to /results without predicting
   if (!prediction) {
     return (
@@ -35,7 +39,7 @@ export const ResultsPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3">
               <Link
                 to="/predict"
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 bg-[#333333] hover:bg-[#1f1f1f] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 bg-[#171717] hover:bg-[#333333] text-white text-xs font-semibold px-5 py-2.5 rounded-xl transition-colors shadow-sm"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Predict Property Price</span>
@@ -70,19 +74,19 @@ export const ResultsPage: React.FC = () => {
   };
 
   return (
-    <div className="w-full py-6 sm:py-10 md:py-14">
+    <div className="w-full py-6 sm:py-10 md:py-12">
       <div className="page-container">
         
         {/* TOP STATUS BAR */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-6 pb-4 border-b border-[#E5E5E5]">
           <div className="flex flex-wrap items-center gap-2 text-xs text-[#737373]">
-            <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-[#FFFFFF] border border-[#E5E5E5] text-[11px] font-medium text-[#171717]">
-              <CheckCircle className="w-3 h-3 text-[#171717] mr-1.5 flex-shrink-0" />
+            <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#FFFFFF] border border-[#E5E5E5] text-xs font-semibold text-[#171717] shadow-xs">
+              <CheckCircle className="w-3.5 h-3.5 text-[#171717] mr-1.5 flex-shrink-0" />
               Estimation Complete
             </span>
             <span className="hidden xs:inline">•</span>
             <span className="flex items-center">
-              <Calendar className="w-3 h-3 mr-1 text-[#737373] flex-shrink-0" />
+              <Calendar className="w-3.5 h-3.5 mr-1 text-[#737373] flex-shrink-0" />
               {formattedDate}
             </span>
           </div>
@@ -90,7 +94,7 @@ export const ResultsPage: React.FC = () => {
           <div className="flex items-center space-x-3 text-xs">
             <button
               onClick={handlePredictAnother}
-              className="inline-flex items-center space-x-1.5 text-[#737373] hover:text-[#171717] transition-colors"
+              className="inline-flex items-center space-x-1.5 text-[#737373] hover:text-[#171717] font-medium transition-colors cursor-pointer"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Predict Another</span>
@@ -98,56 +102,65 @@ export const ResultsPage: React.FC = () => {
             <span className="text-[#E5E5E5]">|</span>
             <Link
               to="/"
-              className="inline-flex items-center space-x-1 text-[#737373] hover:text-[#171717] transition-colors"
+              className="inline-flex items-center space-x-1 text-[#737373] hover:text-[#171717] font-medium transition-colors"
             >
-              <ArrowLeft className="w-3 h-3" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Home</span>
             </Link>
+          </div>
+        </div>
+
+        {/* HERO BANNER FOR THE ESTIMATED PRICE */}
+        <div className="bg-[#FFFFFF] border-2 border-[#171717] rounded-3xl p-6 sm:p-10 shadow-lg mb-8 text-center sm:text-left relative overflow-hidden">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            
+            <div className="md:col-span-8 space-y-2">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#FAFAFA] border border-[#E5E5E5] text-xs font-semibold text-[#525252] uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-[#171717]" />
+                <span>Estimated Nightly Price</span>
+              </div>
+              
+              <div className="flex flex-wrap items-baseline justify-center sm:justify-start gap-2 pt-2">
+                <span className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#171717] tracking-tight">
+                  ${estimated_price.toLocaleString()}
+                </span>
+                <span className="text-base sm:text-lg font-medium text-[#737373]">
+                  per night ({currency})
+                </span>
+              </div>
+
+              {price_range && (
+                <p className="text-sm text-[#737373] pt-1">
+                  Expected standard market range:{' '}
+                  <strong className="text-[#171717] font-bold">
+                    ${price_range.low} – ${price_range.high}
+                  </strong>
+                </p>
+              )}
+            </div>
+
+            <div className="md:col-span-4 flex flex-col items-center md:items-end justify-center border-t md:border-t-0 md:border-l border-[#F0F0F0] pt-4 md:pt-0 md:pl-6 space-y-3">
+              <button
+                onClick={handlePredictAnother}
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-[#171717] hover:bg-[#333333] text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Predict Another Property</span>
+              </button>
+              <span className="text-[11px] text-[#737373]">
+                {model_name}
+              </span>
+            </div>
+
           </div>
         </div>
 
         {/* SIDE BY SIDE ON DESKTOP / STACKED ON MOBILE */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start mb-8">
           
-          {/* LEFT: PREDICTION RESULT CARD */}
+          {/* LEFT: AMENITIES & MODEL DETAILS */}
           <div className="lg:col-span-5 flex flex-col space-y-6">
             
-            {/* Main Price Card */}
-            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-6 sm:p-8 shadow-sm text-left">
-              <span className="text-xs font-semibold text-[#737373] uppercase tracking-wider block mb-2">
-                Estimated Nightly Price
-              </span>
-              
-              <div className="flex flex-wrap items-baseline gap-2 mb-3">
-                <span className="text-4xl sm:text-5xl xl:text-6xl font-extrabold text-[#171717] tracking-tight">
-                  ${estimated_price.toLocaleString()}
-                </span>
-                <span className="text-sm sm:text-base font-medium text-[#737373]">
-                  per night in {currency}
-                </span>
-              </div>
-
-              {price_range && (
-                <div className="p-3 bg-[#FAFAFA] border border-[#E5E5E5] rounded-xl text-xs text-[#737373] mb-5">
-                  Expected market range: <strong className="text-[#171717]">${price_range.low} – ${price_range.high}</strong>
-                </div>
-              )}
-
-              {/* Model details badge */}
-              <div className="border-t border-[#F0F0F0] pt-4">
-                <div className="flex items-center space-x-1.5 text-[11px] font-medium text-[#737373] mb-1">
-                  <Layers className="w-3.5 h-3.5 text-[#171717]" />
-                  <span>Model Architecture</span>
-                </div>
-                <p className="text-xs font-semibold text-[#171717] leading-snug">
-                  {model_name}
-                </p>
-                <p className="text-[10px] text-[#737373] mt-1">
-                  Inverse log-transform: price = exp(log_price)
-                </p>
-              </div>
-            </div>
-
             {/* Selected Amenities in Prediction Column */}
             <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 sm:p-6 shadow-sm">
               <div className="flex items-center space-x-2 pb-3 mb-4 border-b border-[#F0F0F0]">
@@ -174,6 +187,22 @@ export const ResultsPage: React.FC = () => {
                   No specific amenities selected.
                 </p>
               )}
+            </div>
+
+            {/* Model Architecture Info */}
+            <div className="bg-[#FFFFFF] border border-[#E5E5E5] rounded-2xl p-5 sm:p-6 shadow-sm">
+              <div className="flex items-center space-x-2 pb-3 mb-3 border-b border-[#F0F0F0]">
+                <Layers className="w-4 h-4 text-[#171717]" />
+                <h3 className="text-xs font-semibold text-[#171717] uppercase tracking-wider">
+                  Model Information
+                </h3>
+              </div>
+              <p className="text-xs font-semibold text-[#171717] leading-snug">
+                {model_name}
+              </p>
+              <p className="text-[11px] text-[#737373] mt-2 leading-relaxed">
+                Log-linear formulation with exponential transform (<code className="text-[#171717]">price = exp(log_price)</code>).
+              </p>
             </div>
 
           </div>
@@ -251,25 +280,6 @@ export const ResultsPage: React.FC = () => {
             </div>
           </div>
 
-        </div>
-
-        {/* BOTTOM ACTION BAR */}
-        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 bg-[#FFFFFF] border border-[#E5E5E5] rounded-xl p-4 sm:p-5 shadow-sm">
-          <Link
-            to="/predict"
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-[#333333] hover:bg-[#1f1f1f] text-white text-xs sm:text-sm font-semibold px-6 py-3 rounded-xl transition-colors shadow-sm"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Predict Another Property</span>
-          </Link>
-
-          <Link
-            to="/"
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 px-5 py-3 rounded-xl border border-[#E5E5E5] bg-[#FFFFFF] hover:bg-[#F9F9F9] text-xs sm:text-sm font-medium text-[#171717] transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Home</span>
-          </Link>
         </div>
 
       </div>

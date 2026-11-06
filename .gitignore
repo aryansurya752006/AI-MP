@@ -8,15 +8,35 @@ frontend/dist/
 dist-ssr/
 frontend/dist-ssr/
 
+# Python cache & virtual environments
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# Raw large datasets (keep results CSVs)
+train.csv
+data/
+*.zip
+
 # Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
 
-# Environment and IDE
+# Environment & IDE
 .env
 .env.local
+.env.*.local
 .vscode/
 .idea/
 .DS_Store
